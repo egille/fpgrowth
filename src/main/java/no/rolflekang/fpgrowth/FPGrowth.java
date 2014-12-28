@@ -8,14 +8,18 @@ import java.util.*;
 public class FPGrowth {
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("FPGrowth take exactly two arguments");
+        if (args.length > 2) {
+            System.out.println("Usage: file minimum-support [delimiter]");
             System.exit(1);
+        }
+        String delimiter = ",";
+        if (args.length >= 3) {
+            delimiter = args[2];
         }
         System.out.println("Running FPGrowth on file: " + args[0]);
         double minSupport = Double.parseDouble(args[1]);
         File file = new File(args[0]);
-        Preprocessor preprocessor = new DefaultPreprocessor();
+        Preprocessor preprocessor = new TransactionAggregator(delimiter);
         try {
             FileReader fileReader = new FileReader(file);
             preprocessor.loadDataFile(fileReader);
